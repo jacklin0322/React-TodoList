@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component, Fragment } from 'react'
 import TodoItem from './TodoItem'
 
-class TodoList extends React.Component {
+class TodoList extends Component {
 
   //初始化ES6写法
   constructor(props) {
@@ -56,15 +56,14 @@ class TodoList extends React.Component {
 
   //父子组件数据传输, 父组件通过属性形式传参, 参数类型可以是数值也可以是方法
   render() {
-    
     return (
-      <div>
+      <Fragment>
         <div>
           <input placeholder='please input text' value={this.state.text} onChange={this.handleChange} />
-          <button onClick={this.handleClick}>Add</button>
+          <button className='primary-btn' onClick={this.handleClick}>Add</button>
         </div>
         <ul>{this.getTodoItems()}</ul>
-      </div>
+      </Fragment>
     )
   }
 }
