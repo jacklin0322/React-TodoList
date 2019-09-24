@@ -3,13 +3,18 @@ import TodoItem from './TodoItem'
 
 class TodoList extends React.Component {
 
-  //初始化ES6
+  //初始化ES6写法
   constructor(props) {
     super(props)
     this.state = {
       text: '',
       list: []
     }
+
+    //优化bind事件 提升执行效率
+    this.handleClick = this.handleClick.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleItemDelete = this.handleItemDelete.bind(this)
   }
 
   handleClick(){
@@ -26,19 +31,27 @@ class TodoList extends React.Component {
     })
   }
 
-  // handleItemClick(index) {
-  //   console.log(index)
-  //   const list = [...this.state.list]
-  //   list.splice(index, 1)
-  //   //可调试性、性能最优 建议使用副本数据操作
-  //   this.setState({list})
-  // }
-
   handleItemDelete(index) {
-    console.log(index)
+    //可调试性、性能最优 建议使用副本数据操作
     const list = [...this.state.list]
     list.splice(index, 1)
     this.setState({list})
+  }
+
+  //组件拆分
+  getTodoItems() {
+    return (
+      this.state.list.map((item, index) => {
+        return (
+          <TodoItem 
+            key={index} 
+            content={item} 
+            index={index} 
+            handleDelete={this.handleItemDelete}
+          />
+        )
+      })
+    )
   }
 
   //父子组件数据传输, 父组件通过属性形式传参, 参数类型可以是数值也可以是方法
@@ -47,18 +60,10 @@ class TodoList extends React.Component {
     return (
       <div>
         <div>
-          <input placeholder='please input text' value={this.state.text} onChange={this.handleChange.bind(this)} />
-          <button onClick={this.handleClick.bind(this)}>Add</button>
+          <input placeholder='please input text' value={this.state.text} onChange={this.handleChange} />
+          <button onClick={this.handleClick}>Add</button>
         </div>
-        <ul>
-          {
-            this.state.list.map((item, index) => {
-              // return <li key={index} onClick={this.handleItemClick.bind(this, index)}>{item}</li>
-              //组件拆分
-              return <TodoItem key={index} content={item} index={index} delete={this.handleItemDelete.bind(this)}/>
-            })
-          }
-        </ul>
+        <ul>{this.getTodoItems()}</ul>
       </div>
     )
   }

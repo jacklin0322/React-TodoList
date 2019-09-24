@@ -2,14 +2,24 @@ import React from 'react'
 
 class TodoItem extends React.Component {
 
-    handleDelete(index) {
-        this.props.delete(index)
+    constructor(props) {
+        //继承
+        super(props)
+        this.handleDelete = this.handleDelete.bind(this)
+    }
+
+    handleDelete() {
+        // this.props.delete(index)
+        const { handleDelete, index } = this.props
+        handleDelete(index)
     }
 
     render() {
+        //ES6结构赋值
+        const { content } = this.props
         return (
             //组件数据传输, 子组件通过props接收参数 
-            <div onClick={this.handleDelete.bind(this, this.props.index)}>{this.props.content}</div>
+            <div onClick={this.handleDelete}>{content}</div>
         )
     }
 }
